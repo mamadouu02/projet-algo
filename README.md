@@ -10,4 +10,4 @@ Les high-score sont disponibles ici :
 
 ## Historique des tests
 
-L'historique des tests sont disponibles sur [https://datamove.imag.fr/frederic.wagner/algo/algo_bouihih_thiongam.html](https://datamove.imag.fr/frederic.wagner/algo/algo_bouihih_thiongam.html).
+L'historique des tests est disponible sur [https://datamove.imag.fr/frederic.wagner/algo/algo_bouihih_thiongam.html](https://datamove.imag.fr/frederic.wagner/algo/algo_bouihih_thiongam.html).
