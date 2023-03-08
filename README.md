@@ -1,4 +1,4 @@
-# Algorithmique et structures de données
+# Algorithmique et structures de données - Projet
 
 ## High-score
 
@@ -10,4 +10,4 @@ Les high-score sont disponibles ici :
 
 ## Historique des tests
 
-Les historiques des tests sont disponibles sur [https://datamove.imag.fr/frederic.wagner/algo/algo_bouihih_thiongam.html](https://datamove.imag.fr/frederic.wagner/algo/algo_bouihih_thiongam.html).
+L'historique des tests sont disponibles sur [https://datamove.imag.fr/frederic.wagner/algo/algo_bouihih_thiongam.html](https://datamove.imag.fr/frederic.wagner/algo/algo_bouihih_thiongam.html).
