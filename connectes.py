@@ -23,15 +23,6 @@ def load_instance(filename):
     return distance, points
 
 
-def near(point, other, distance):
-    """
-    renvoie True si les points sont proches en abscisse
-    """
-    x_1 = point.coordinates[0]
-    x_2 = other.coordinates[0]
-    return abs(x_2 - x_1) <= distance
-
-
 def print_components_sizes(distance, points):
     """
     affichage des tailles triees de chaque composante
