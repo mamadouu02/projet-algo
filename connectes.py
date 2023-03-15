@@ -23,6 +23,17 @@ def load_instance(filename):
     return distance, points
 
 
+def insertion(tab, elem):
+    """
+    insere un element dans une liste triee dans l'ordre decroissant
+    """
+    i = 0
+    if tab:
+        while i < len(tab) and elem < tab[i]:
+            i += 1
+    tab.insert(i, elem)
+
+
 def print_components_sizes(distance, points):
     """
     affichage des tailles triees de chaque composante
@@ -51,19 +62,19 @@ def print_components_sizes(distance, points):
                     yield j
             j -= 1
 
-    for i in range(n_points):
-        if i not in processed:
-            processed.add(i)
-            components_sizes.append(1)
-            stack.append(i)
+    for index in range(n_points):
+        if index not in processed:
+            processed.add(index)
+            size = 1
+            stack.append(index)
             while stack:
-                index = stack.pop()
-                for neighbor in neighbors(index, i):
+                i = stack.pop()
+                for neighbor in neighbors(i, index):
                     processed.add(neighbor)
-                    components_sizes[-1] += 1
+                    size += 1
                     stack.append(neighbor)
+            insertion(components_sizes, size)
 
-    components_sizes.sort(reverse=True)
     print(components_sizes)
 
 
