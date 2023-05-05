@@ -29,7 +29,7 @@ def explore_connexe_comp(dist,points,visited,grid,first,square_neighbor):
     while len(pile) != 0 :
         indice_pts = pile.pop()
         current_pts = points[indice_pts]
-        approx_pts = int(current_pts.coordinates[0]/dist),int(current_pts.coordinates[1]/dist)
+        approx_pts = int(current_pts.coordinates[0]*1.6**(1/2)/dist),int(current_pts.coordinates[1]*1.6**(1/2)/dist)
         
         # Rend le point courrent traité
         visited[indice_pts] = True
@@ -58,7 +58,7 @@ def print_components_sizes(dist, points):
     # grâce à l'approximation à l'entier le plus proche + structure de dictionnaire
     for k in range(n_pts):
         pts_k = points[k]
-        approx_pts = int(pts_k.coordinates[0]/dist),int(pts_k.coordinates[1]/dist)
+        approx_pts = int(pts_k.coordinates[0]*1.6**(1/2)/dist),int(pts_k.coordinates[1]*1.6**(1/2)/dist)
         square = grid.get(approx_pts, {})
         square[k] = pts_k
         grid[approx_pts] = square
@@ -68,7 +68,7 @@ def print_components_sizes(dist, points):
     for k in range(n_pts):
         if not(visited[k]):
             size = explore_connexe_comp(dist,points,visited,grid,k,square_neighbor)
-            components_sizes += [size]
+            components_sizes.append(size)
 
     components_sizes.sort(reverse=True)
     print(components_sizes)
