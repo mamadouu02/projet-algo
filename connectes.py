@@ -5,9 +5,35 @@ sort and display.
 """
 
 from timeit import timeit
-from sys import argv
+from sys import argv, setrecursionlimit
 
 from geo.point import Point
+
+
+class Node:
+    def __init__(self, index, axis, left=None, right=None):
+        self.index = index
+        self.axis = axis
+        self.left = left
+        self.right = right
+
+
+class Tree:
+    def __init__(self, points):
+        indexes = list(range(len(points)))
+        self.points = points
+        self.root = self.construct(indexes)
+
+    def construct(self, indexes, depth=0):
+        if not indexes:
+            return None
+
+        axis = depth % 2
+        indexes.sort(key=lambda i : self.points[i].coordinates[axis])
+        m = len(indexes) // 2
+        median = indexes[m]
+
+        return Node(median, axis, self.construct(indexes[:m], depth+1), self.construct(indexes[m+1:], depth+1))
 
 
 def load_instance(filename):
@@ -22,56 +48,44 @@ def load_instance(filename):
 
     return distance, points
 
-def explore_connexe_comp(dist,points,visited,grid,first,square_neighbor):
-    """Calcule la taille d'une composante connexe"""
-    size,pile = 0,set([first])
-    # Tant que la pile des voisins du sommet traité est non nul faire:
-    while len(pile) != 0 :
-        indice_pts = pile.pop()
-        current_pts = points[indice_pts]
-        approx_pts = int(current_pts.coordinates[0]*1.6**(1/2)/dist),int(current_pts.coordinates[1]*1.6**(1/2)/dist)
-        
-        # Rend le point courrent traité
-        visited[indice_pts] = True
-        grid[approx_pts].pop(indice_pts)
-        size += 1
 
-        # Recherche optimisée de possibles vosins 
-        for coord in square_neighbor:
-            key = (approx_pts[0] + coord[0],approx_pts[1] + coord[1])
-            for index_possible_neighbor in grid.get(key,{}):
-                if not visited[index_possible_neighbor]:
-                    if points[indice_pts].distance_to(grid[key][index_possible_neighbor]) <= dist :
-                        pile.add(index_possible_neighbor)
-
-    return size
-
-def print_components_sizes(dist, points):
+def print_components_sizes(distance, points):
     """
     affichage des tailles triees de chaque composante
     """
-    n_pts,components_sizes,grid = len(points),[],{}
-    visited = [False for _ in range(n_pts)]
-    square_neighbor = [(-1, -1), (0, -1), (1, -1), (-1, 0), (0, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]
+    n_points = len(points)
+    components_sizes = []
+    processed = [False] * n_points
+    tree = Tree(points)
 
-    # On ordonne les points par paquets qui appartiennent au même carré de coté dist 
-    # grâce à l'approximation à l'entier le plus proche + structure de dictionnaire
-    for k in range(n_pts):
-        pts_k = points[k]
-        approx_pts = int(pts_k.coordinates[0]*1.6**(1/2)/dist),int(pts_k.coordinates[1]*1.6**(1/2)/dist)
-        square = grid.get(approx_pts, {})
-        square[k] = pts_k
-        grid[approx_pts] = square
+    def search(node, i):
+        if node is not None:
+            j = node.index
+            axis = node.axis
+            point, other = points[i], points[j]
+            delta = other.coordinates[axis] - point.coordinates[axis]
 
+            if abs(delta) <= distance:
+                if not processed[j] and point.distance_to(other) <= distance:
+                    processed[j] = True
+                    components_sizes[-1] += 1
+                    search(tree.root, j)
+                search(node.left, i)
+                search(node.right, i)
+            elif delta > 0:
+                search(node.left, i)
+            else:
+                search(node.right, i)
 
-    # Tant que les sommets n'ont pas tous été traités, appliquer la fonction
-    for k in range(n_pts):
-        if not(visited[k]):
-            size = explore_connexe_comp(dist,points,visited,grid,k,square_neighbor)
-            components_sizes.append(size)
+    for i in range(n_points):
+        if not processed[i]:
+            processed[i] = True
+            components_sizes.append(1)
+            search(tree.root, i)
 
     components_sizes.sort(reverse=True)
     print(components_sizes)
+
 
 def main():
     """
@@ -82,4 +96,5 @@ def main():
         print_components_sizes(distance, points)
 
 
+setrecursionlimit(1000000000)
 main()
