@@ -53,10 +53,10 @@ def print_components_sizes(distance, points):
     """
     affichage des tailles triees de chaque composante
     """
-    n_points = len(points)
-    components_sizes = []
-    processed = [False] * n_points
     tree = Tree(points)
+    components_sizes = []
+    n_points = len(points)
+    processed = [False] * n_points
 
     def search(node, i):
         if node is not None:
@@ -64,7 +64,6 @@ def print_components_sizes(distance, points):
             axis = node.axis
             point, other = points[i], points[j]
             delta = other.coordinates[axis] - point.coordinates[axis]
-
             if abs(delta) <= distance:
                 if not processed[j] and point.distance_to(other) <= distance:
                     processed[j] = True
