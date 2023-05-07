@@ -60,7 +60,7 @@ def print_components_sizes(dist, points):
     # grâce à l'approximation à l'entier le plus proche + structure de dictionnaire
     for k in range(n_pts):
         pts_k = points[k]
-        approx_pts = int(pts_k.coordinates[0] * 1.6**(1/2) / dist), int(pts_k.coordinates[1] * 1.6**(1/2) / dist)
+        approx_pts = int(pts_k.coordinates[0]/dist), int(pts_k.coordinates[1]/dist)
         square = grid.get(approx_pts, {})
         square[k] = pts_k
         grid[approx_pts] = square
