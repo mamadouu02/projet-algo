@@ -19,11 +19,12 @@ class Point:
 
     distance = point1.distance_to(point2)
     """
-    def __init__(self, coordinates):
+    def __init__(self, coordinates, processed=False):
         """
         build new point using an array of coordinates.
         """
         self.coordinates = coordinates
+        self.processed = processed
 
     def copy(self):
         """

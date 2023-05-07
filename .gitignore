@@ -1,0 +1,4 @@
+.DS_Store
+geo/__pycache__
+tests/*
+!tests/*.py
