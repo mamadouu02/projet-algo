@@ -22,17 +22,15 @@ def load_instance(filename):
 
     return distance, points
 
+
 def explore_connexe_comp(dist, points, visited, grid, first, square_neighbor):
-    """
-    calcule la taille d'une composante connexe
-    """
     size, pile = 0, set([first])
 
-    # Tant que la pile des voisins du sommet traité est non nulle faire:
+    # Tant que la pile des voisins du sommet traité est non vide faire:
     while pile:
         indice_pts = pile.pop()
         current_pts = points[indice_pts]
-        approx_pts = int(current_pts.coordinates[0] * 1.6**(1/2) / dist), int(current_pts.coordinates[1] * 1.6**(1/2) / dist)
+        approx_pts = int(current_pts.coordinates[0]/dist), int(current_pts.coordinates[1]/dist)
         
         # Rend le point courant traité
         visited[indice_pts] = True
@@ -48,6 +46,7 @@ def explore_connexe_comp(dist, points, visited, grid, first, square_neighbor):
                         pile.add(index_possible_neighbor)
 
     return size
+
 
 def print_components_sizes(dist, points):
     """
@@ -66,7 +65,7 @@ def print_components_sizes(dist, points):
         square[k] = pts_k
         grid[approx_pts] = square
 
-    # Tant que les sommets n'ont pas tous été traités, appliquer la fonction
+    # Tant que les sommets n'ont pas tous été traités, appeler la fonction
     for k in range(n_pts):
         if not visited[k]:
             size = explore_connexe_comp(dist, points, visited, grid, k, square_neighbor)
@@ -74,6 +73,7 @@ def print_components_sizes(dist, points):
 
     components_sizes.sort(reverse=True)
     print(components_sizes)
+
 
 def main():
     """
